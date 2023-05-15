@@ -1,0 +1,48 @@
+import requests
+from bs4 import BeautifulSoup
+
+def scrape_search(keyword):
+  """Scrape the top 3 search results for a given keyword.
+
+  Args:
+    keyword (str): The keyword to search for.
+
+  Returns:
+    A list of dictionaries, where each dictionary contains the following information about a search result:
+      title: The title of the search result.
+      url: The URL of the search result.
+      description: The description of the search result.
+  """
+
+  # Create the URL for the Google search page.
+  url = f"https://www.google.com/search?q={keyword}"
+
+  # Make a request to the Google search page.
+  response = requests.get(url)
+
+  # Parse the HTML response.
+  soup = BeautifulSoup(response.text, "html.parser")
+
+  # Find the top 3 search results.
+  results = soup.find_all("div", class_="g")[:3]
+
+  # Create a list of dictionaries to store the search results.
+  search_results = []
+  for result in results:
+    title = result.find("h3").text
+    url = result.find("a").get("href")
+    description = result.find("div", class_="slp").text
+    search_results.append({
+      "title": title,
+      "url": url,
+      "description": description,
+    })
+
+  return search_results
+
+
+if __name__ == "__main__":
+  keyword = input("Enter a keyword to search for: ")
+  search_results = scrape_search(keyword)
+  for result in search_results:
+    print(result)

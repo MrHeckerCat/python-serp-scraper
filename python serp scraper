@@ -6,6 +6,7 @@ def get_google_results(query):
     params = {
         "api_key": "5e08f4e61238a19603c5684ba379d005989c5e0c078e5c19e52caf8629831f40",  # Obtain your API key from SerpApi
         "engine": "google",
+        "device": "mobile",
         "q": query,
         "num": "5"  # Fetch the top 5 results
     }
